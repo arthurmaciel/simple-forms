@@ -1,0 +1,7 @@
+(compile -s -O2 simple-forms.scm -j simple-forms)
+(compile -s -O2 simple-forms.import.scm)
+
+(install-extension
+  'simple-forms
+  '("simple-forms.so" "simple-forms.import.so")
+  '((version "0.1")))

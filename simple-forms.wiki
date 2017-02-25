@@ -1,0 +1,24 @@
+(define-page "/"
+  (lambda ()
+    (ajax "validate" 'submit 'click
+          (lambda ()
+            (let ((validated-form (validate-form my-form)))
+              (if (not (form-error? validated-form))
+                  ;; render form values
+                  `(ul
+                    ,@(map (lambda (field)
+                             (let ((var (field-var field)))
+                               `(li ,var " = " (span ,($ var)))))
+                           (form-fields my-form)))
+                  ;; show errors
+                  `(ul
+                    ,@(map (lambda (field)
+                             (let ((error (field-error ))) `(li ,error)))
+                           (form-fields validated-form))))))
+          target: "result"
+          arguments: (field-values my-form))
+    
+    `(,(render-form/table my-form)
+      (button (@ (id "submit")) "Enviar")
+      (div (@ (id "result")))))
+  use-ajax: #t)
